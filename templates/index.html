@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ESP32 Control and Sensor Data</title>
+    <link rel="stylesheet" href="static\styles.css">
+    <script>
+        async function fetchSensorData() {
+            const response = await fetch('/front_end');
+            const data = await response.json();
+            document.getElementById('temperature').textContent = data.temperature + ' °C';
+            document.getElementById('pressure').textContent = data.pressure + ' hPa';
+            document.getElementById('humidity').textContent = data.humidity + ' %';
+            document.getElementById('digital1').textContent = data.digital1;
+            document.getElementById('analog1').textContent = data.analog1;
+            document.getElementById('digital2').textContent = data.digital2;
+            document.getElementById('analog2').textContent = data.analog2;
+            document.getElementById('digital3').textContent = data.digital3;
+            document.getElementById('analog3').textContent = data.analog3;
+            document.getElementById('weight1').textContent = data.weight1;
+            document.getElementById('weight2').textContent = data.weight2;
+            document.getElementById('weight3').textContent = data.weight3;
+        }
+
+        // Fetch sensor data every second
+        setInterval(fetchSensorData, 10000);
+
+        async function sendMotorCommand(motor, state) {
+            const response = await fetch(`/set_motor/${motor}/${state}`, { method: 'POST' });
+            const data = await response.json();
+            alert(data.status);
+        }
+
+        async function sendServoCommand(servo, position) {
+            const response = await fetch(`/set_servo/${servo}/${position}`, { method: 'POST' });
+            const data = await response.json();
+            alert(data.status);
+        }
+    </script>
+</head>
+<body>
+    <header>
+        <h1>ESP32 Control & Sensor Data</h1>
+    </header>
+    <main>
+        <section class="sensor-data">
+            <h2>Current Sensor Data</h2>
+            <div class="data-item">Temperature: <span id="temperature">--</span></div>
+            <div class="data-item">Pressure: <span id="pressure">--</span></div>
+            <div class="data-item">Humidity: <span id="humidity">--</span></div>
+        </section>
+
+        <section class="hd38-data">
+            <h2>HD38 Sensor Data</h2>
+            <div class="data-item">Digital1: <span id="digital1">--</span></div>
+            <div class="data-item">Analog1: <span id="analog1">--</span></div>
+            <div class="data-item">Digital2: <span id="digital2">--</span></div>
+            <div class="data-item">Analog2: <span id="analog2">--</span></div>
+            <div class="data-item">Digital3: <span id="digital3">--</span></div>
+            <div class="data-item">Analog3: <span id="analog3">--</span></div>
+            <div class="data-item">Weight1: <span id="weight1">--</span></div>
+            <div class="data-item">Weight2: <span id="weight2">--</span></div>
+            <div class="data-item">Weight3: <span id="weight3">--</span></div>
+        </section>
+
+        <section class="control-panel">
+            <h2>Motor Control</h2>
+            <div class="control-buttons">
+                <button onclick="sendMotorCommand('motor1', 'on')">Turn Motor 1 On</button>
+                <button onclick="sendMotorCommand('motor1', 'off')">Turn Motor 1 Off</button>
+                <button onclick="sendMotorCommand('motor2', 'on')">Turn Motor 2 On</button>
+                <button onclick="sendMotorCommand('motor2', 'off')">Turn Motor 2 Off</button>
+                <button onclick="sendMotorCommand('motor3', 'on')">Turn Motor 3 On</button>
+                <button onclick="sendMotorCommand('motor3', 'off')">Turn Motor 3 Off</button>
+            </div>
+
+            <h2>Servo Control</h2>
+            <div class="servo-controls">
+                <label for="servo1">Servo 1 Position (0-180):</label>
+                <input type="number" id="servo1" name="servo1" min="0" max="180" onchange="sendServoCommand('servo1', this.value)">
+                <label for="servo2">Servo 2 Position (0-180):</label>
+                <input type="number" id="servo2" name="servo2" min="0" max="180" onchange="sendServoCommand('servo2', this.value)">
+            </div>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2024 ESP32 Project. All rights reserved.</p>
+    </footer>
+</body>
+</html>

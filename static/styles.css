@@ -1,0 +1,83 @@
+/* General Styles */
+body {
+    background-color: #121212;
+    color: #ffffff;
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: #333333; /* Dark gray */
+    color: #ffffff;
+    padding: 20px;
+    text-align: center;
+}
+
+main {
+    padding: 20px;
+}
+
+footer {
+    background-color: #1f1f1f; /* Slightly lighter dark gray */
+    color: #bbbbbb; /* Light gray */
+    text-align: center;
+    padding: 10px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+/* Section Styles */
+section {
+    margin-bottom: 20px;
+}
+
+h1, h2 {
+    color: #ffffff; /* White */
+    margin-bottom: 10px;
+}
+
+.data-item {
+    font-size: 18px;
+    margin: 8px 0;
+}
+
+/* Control Buttons and Input Styles */
+.control-buttons, .servo-controls {
+    margin: 20px 0;
+}
+
+/* Button Styles */
+button {
+    background-color: #444444; /* Dark gray */
+    border: none;
+    color: #ffffff;
+    padding: 10px 20px;
+    margin: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #555555; /* Slightly lighter gray */
+}
+
+/* Input Styles */
+input {
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #444444; /* Dark gray */
+    background-color: #1f1f1f; /* Darker gray */
+    color: #ffffff;
+    font-size: 16px;
+    width: calc(100% - 20px);
+    box-sizing: border-box;
+}
+
+label {
+    display: block;
+    margin: 10px 0 5px;
+}
