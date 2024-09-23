@@ -1,0 +1,47 @@
+body {
+    background-color: #1e1e1e;
+    color: #ffffff;
+    font-family: Arial, sans-serif;
+}
+
+.value-container {
+    margin: 20px 0;
+    display: flex;
+    justify-content: space-between;
+}
+
+.digital-values, .analog-values, .sensor-data {
+    flex: 1;
+    display: flex;
+    justify-content: space-around;
+}
+
+.charts-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 2000px;
+    margin: 0 auto;
+    padding: 10px;
+    height: auto; /* Automatische Höhe für bessere Anpassung */
+    max-height: 2000px;
+    box-sizing: border-box;
+}
+
+.chart-wrapper {
+    flex: 1 1 30%; /* Flex-Basis auf 30% setzen, um 3 Grafiken in einer Reihe zu ermöglichen */
+    margin: 10px;
+
+    background-color: #222;
+    padding: 15px;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+canvas {
+    border: 1px solid #3c3c3c;
+    border-radius: 5px;
+    width: 100%; /* Sicherstellen, dass das Canvas die Breite ausfüllt */
+    height: 100%; /* Höhe automatisch anpassen */
+}

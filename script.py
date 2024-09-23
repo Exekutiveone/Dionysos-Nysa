@@ -1,4 +1,5 @@
 from flask import Flask, request, jsonify, render_template
+import sqlite3
 
 app = Flask(__name__)
 
@@ -27,6 +28,37 @@ commands = {
     "servo2": 0
 }
 
+# SQLite-Datenbankinitialisierung
+DATABASE = 'sensor_data.db'
+
+def create_connection():
+    conn = sqlite3.connect(DATABASE)
+    return conn
+
+def create_table():
+    conn = create_connection()
+    with conn:
+        conn.execute('''
+            CREATE TABLE IF NOT EXISTS sensor_data (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                temperature REAL,
+                pressure REAL,
+                humidity REAL,
+                weight1 INTEGER,
+                weight2 INTEGER,
+                weight3 INTEGER,
+                digital1 INTEGER,
+                analog1 INTEGER,
+                digital2 INTEGER,
+                analog2 INTEGER,
+                digital3 INTEGER,
+                analog3 INTEGER,
+                timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+            );
+        ''')
+
+create_table()
+
 @app.route('/')
 def index():
     return render_template('index.html', sensor_data=sensor_data, commands=commands)
@@ -37,7 +69,19 @@ def update_data():
     data = request.json
     sensor_data = data
     print("Empfangene Sensordaten:", sensor_data)
+    save_to_db(sensor_data)
     return jsonify({"status": "success"})
+
+def save_to_db(data):
+    conn = create_connection()
+    with conn:
+        conn.execute('''
+            INSERT INTO sensor_data (temperature, pressure, humidity, weight1, weight2, weight3, digital1, analog1, digital2, analog2, digital3, analog3)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ''', (data['temperature'], data['pressure'], data['humidity'],
+              data['weight1'], data['weight2'], data['weight3'],
+              data['digital1'], data['analog1'], data['digital2'],
+              data['analog2'], data['digital3'], data['analog3']))
 
 @app.route('/get_commands', methods=['GET'])
 def get_commands():
@@ -66,11 +110,7 @@ def set_servo(servo, position):
 
 @app.route('/front_end', methods=['GET'])
 def update_data_front_end():
-    # Return the sensor data as a JSON response
     return jsonify(sensor_data)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
-
-
-

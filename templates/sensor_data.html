@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="static/sensor_data.css">
+    <title>Sensordaten</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        let charts = {};
+
+        async function fetchSensorData() {
+            const response = await fetch('/get_sensor_data');
+            const data = await response.json();
+            updateCharts(data);
+        }
+
+        function updateCharts(data) {
+            const keys = ['temperature', 'pressure', 'humidity', 'weight1', 'weight2', 'weight3', 'digital1', 'analog1', 'digital2', 'analog2', 'digital3', 'analog3'];
+            keys.forEach(key => {
+                const labels = data.map(row => row.timestamp);
+                const values = data.map(row => row[key]);
+
+                if (charts[key]) {
+                    charts[key].destroy();
+                }
+
+                const ctx = document.getElementById(`${key}Chart`).getContext('2d');
+                charts[key] = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: key.charAt(0).toUpperCase() + key.slice(1),
+                            data: values,
+                            borderColor: 'rgba(75, 192, 192, 1)',
+                            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            });
+
+            // Aktuelle Werte aktualisieren
+            document.getElementById('temperatureValue').textContent = `${data[data.length - 1].temperature} °C`;
+            document.getElementById('pressureValue').textContent = `${data[data.length - 1].pressure} hPa`;
+            document.getElementById('humidityValue').textContent = `${data[data.length - 1].humidity} %`;
+            document.getElementById('digital1Value').textContent = data[data.length - 1].digital1;
+            document.getElementById('digital2Value').textContent = data[data.length - 1].digital2;
+            document.getElementById('digital3Value').textContent = data[data.length - 1].digital3;
+            document.getElementById('analog1Value').textContent = data[data.length - 1].analog1;
+            document.getElementById('analog2Value').textContent = data[data.length - 1].analog2;
+            document.getElementById('analog3Value').textContent = data[data.length - 1].analog3;
+        }
+
+        setInterval(fetchSensorData, 5000);
+    </script>
+</head>
+<body>
+    <h1>Alle Sensordaten</h1>
+
+    <h2>Diagramme</h2>
+    <div class="charts-container">
+        <div class="chart-wrapper">
+            <canvas id="temperatureChart" height="400"></canvas>
+        </div>
+        <div class="chart-wrapper">
+            <canvas id="pressureChart" height="400"></canvas>
+        </div>
+        <div class="chart-wrapper">
+            <canvas id="humidityChart" height="400"></canvas>
+        </div>
+    </div>
+
+    <h2>Gewichtswerte</h2>
+    <div class="charts-container">
+        <div class="chart-wrapper">
+            <canvas id="weight1Chart" height="400"></canvas>
+        </div>
+        <div class="chart-wrapper">
+            <canvas id="weight2Chart" height="400"></canvas>
+        </div>
+        <div class="chart-wrapper">
+            <canvas id="weight3Chart" height="400"></canvas>
+        </div>
+    </div>
+
+    <h2>Analoge Werte</h2>
+    <div class="charts-container">
+        <div class="chart-wrapper">
+            <canvas id="analog1Chart" height="400"></canvas>
+        </div>
+        <div class="chart-wrapper">
+            <canvas id="analog2Chart" height="400"></canvas>
+        </div>
+        <div class="chart-wrapper">
+            <canvas id="analog3Chart" height="400"></canvas>
+        </div>
+    </div>
+
+    <h2>Digitale Werte</h2>
+    <div class="charts-container">
+        <div class="chart-wrapper">
+            <canvas id="digital1Chart" height="400"></canvas>
+        </div>
+        <div class="chart-wrapper">
+            <canvas id="digital2Chart" height="400"></canvas>
+        </div>
+        <div class="chart-wrapper">
+            <canvas id="digital3Chart" height="400"></canvas>
+        </div>
+    </div>
+
+    <a href="/">Zurück zur Hauptseite</a>
+</body>
+</html>

@@ -6,14 +6,14 @@
 #include <ESP32Servo.h>
 #include <ArduinoJson.h>
 #include <HX711.h>
-#include <ArduinoOTA.h> // OTA-Bibliothek
+#include <ArduinoOTA.h>
 
 // WiFi-Anmeldeinformationen
-const char* ssid = "Super-Pevesi";
-const char* password = "v843W#AL#JQy!Uj";
-const char* OTA_Password = "your_ota_password_here"; // OTA Passwort
+const char* ssid = " ";
+const char* password = " ";
+const char* OTA_Password = " "; // OTA Passwort
 // Server-URL für externe Datenübertragung (z.B. Sensordaten an Flask-Server)
-const char* serverUrl = "http://192.168.2.190:5000";  // Flask-Server-IP
+const char* serverUrl = " ";  // Flask-Server-IP
 
 // Waage 1
 const int DOUT_PIN1 = 15;
